@@ -1,5 +1,7 @@
 .envs
 .env
+env
+venv312
 venv
 .vscode
 src\AcademEase\settings.py
