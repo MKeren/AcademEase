@@ -993,33 +993,6 @@ def upload_transcript(request):
             file = form.cleaned_data['file']
             df = None
 
-            # Process file based on its extension
-            if file.name.endswith('.csv'):
-                df = process_csv(file)
-            elif file.name.endswith('.xlsx') or file.name.endswith('.xls'):
-                df = process_excel(file)
-            elif file.name.endswith('.pdf'):
-                df = process_pdf(file)
-            elif file.name.endswith('.docx') or file.name.endswith('.doc'):
-                df = process_docx(file)
-            elif file.name.endswith('.txt'):
-                df = process_txt(file)
-            else:
-                return render(request, 'upload_transcript.html', {
-                    'form': form,
-                    'error': 'Unsupported file format.'
-                })
-
-            # Log DataFrame info
-            if df is not None:
-                print("DataFrame loaded successfully")
-                #print(df.head())
-            else:
-                return render(request, 'upload_transcript.html', {
-                    'form': form,
-                    'error': 'Failed to process the file.'
-                })
-
             catalogs = {
                 'Computer_Newcatalog': Computer_Newcatalog,
                 'Computer_OldCatalog': Computer_OldCatalog,
@@ -1086,63 +1059,6 @@ def upload_transcript(request):
                 'nursing_catalog': nursing_catalog,
             }
 
-            for catalog_name, catalog_model in catalogs.items():
-                # Determine parent model
-                if issubclass(catalog_model, Health_Sciences_Course):
-                    parent_model = Health_Sciences_Course
-                elif issubclass(catalog_model, Arts_and_Sciences_Course):
-                    parent_model = Arts_and_Sciences_Course
-                elif issubclass(catalog_model, Economics_and_Administrative_Sciences_Course):
-                    parent_model = Economics_and_Administrative_Sciences_Course
-                elif issubclass(catalog_model, Law_Course):
-                    parent_model = Law_Course
-                elif issubclass(catalog_model, Engineering_Course):
-                    parent_model = Engineering_Course
-                elif issubclass(catalog_model, Architecture_and_Fine_Arts_Course):
-                    parent_model = Architecture_and_Fine_Arts_Course
-                elif issubclass(catalog_model, Dentistry_Course):
-                    parent_model = Dentistry_Course
-                elif issubclass(catalog_model, Educational_Sciences_Course):
-                    parent_model = Educational_Sciences_Course
-                elif issubclass(catalog_model, Phamarcy_Course):
-                    parent_model = Phamarcy_Course
-                else:
-                    #print(f"Skipping {catalog_name} because it's not a subclass of a known parent model.")
-                    continue
-                # Get all course codes from the catalog model
-                course_codes = set(catalog_model.objects.values_list('course_code', flat=True))
-
-                # Filter DataFrame for courses that exist in the catalog model
-                catalog_df = df[df['Code'].isin(course_codes)]
-
-                if not catalog_df.empty:
-                    #print(f"Processing DataFrame for {catalog_name}")
-                    #print(catalog_df.head())
-                
-                # Ensure the DataFrame has the correct columns
-                    columns = ['Code', 'Title of Course', 'ECTS Credits', 'Grade', 'Credits', 'Gr.Pts']
-                    catalog_df = catalog_df.reindex(columns=columns)
-
-                # Remove any extra columns
-                    catalog_df = catalog_df[columns]
-
-                # Update the grades in the respective catalog model
-                for index, row in catalog_df.iterrows():
-                        code = row['Code']
-                        grade = row['Grade']
-                        title = row['Title of Course']
-                        ects_credit = row['ECTS Credits']
-                        credit = row['Credits']
-
-                        course, created = catalog_model.objects.get_or_create(course_code=code)
-                        course.grade = grade
-                        course.save()
-
-                        transcript, created = Transcript.objects.update_or_create(code=code, defaults={'grades': grade},title=title,ects_credits=ects_credit,credits=credit)
-                        if not created:
-                            transcript.grades = grade
-                            transcript.save()
-
             model_mapping = {
                 'AreaElectiveCourse_Computer_OldCatalog': AreaElectiveCourse_Computer_OldCatalog,
                 'AreaElectiveCourse_Computer_Newcatalog': AreaElectiveCourse_Computer_Newcatalog,
@@ -1208,38 +1124,6 @@ def upload_transcript(request):
                 'AreaElectiveCourse_Nursing_Catalog': AreaElectiveCourse_Nursing_Catalog
         }
             
-            # Ensure DataFrame is correct
-            columns = ['Code', 'Title of Course', 'ECTS Credits', 'Grade', 'Credits']
-            
-            for catalog_name, elective_model in model_mapping.items():
-                elective_model: Type[Model]  # Tell the editor that elective_model is a Django model class
-                
-                # Get all course codes from the current model
-                course_codes = set(elective_model.objects.values_list('course_code', flat=True))
-
-                # Filter the DataFrame for the current model's course codes
-                catalog_df = df[df['Code'].isin(course_codes)]
-
-                # If no matching courses in the DataFrame for the current model, skip it
-                if catalog_df.empty:
-                    continue
-
-                # Filter the DataFrame for the current model's course codes
-                catalog_df = df[df['Code'].isin(course_codes)].reindex(columns=columns)
-                
-                # Iterate through the filtered DataFrame and update the corresponding model
-                for index, row in catalog_df.iterrows():
-                    code = row['Code']
-                    grade = row['Grade']
-                    title = row['Title of Course']
-                    ects_credit = row['ECTS Credits']
-                    credit = row['Credits']
-
-                elective, created = elective_model.objects.get_or_create(
-                course_code=code)
-                elective.grade = grade
-                elective.save()
-           
             technical_elective_mapping = {
                 'AreaTechnicalCourse_Computer_OldCatalog': AreaTechnicalCourse_Computer_OldCatalog,
                 'AreaTechnicalCourse_Computer_Newcatalog': AreaTechnicalCourse_Computer_Newcatalog,
@@ -1305,6 +1189,136 @@ def upload_transcript(request):
                 'AreaTechnicalCourse_Nursing_Catalog': AreaTechnicalCourse_Nursing_Catalog
             }
 
+            # ✅ Then reset all data
+            Transcript.objects.all().delete()
+
+            for model in catalogs.values():
+                model.objects.update(grade=None)
+
+            for model in model_mapping.values():
+                model.objects.update(grade=None)
+
+            for model in technical_elective_mapping.values():
+                model.objects.update(grade=None)
+
+            # Process file based on its extension
+            if file.name.endswith('.csv'):
+                df = process_csv(file)
+            elif file.name.endswith('.xlsx') or file.name.endswith('.xls'):
+                df = process_excel(file)
+            elif file.name.endswith('.pdf'):
+                df = process_pdf(file)
+            elif file.name.endswith('.docx') or file.name.endswith('.doc'):
+                df = process_docx(file)
+            elif file.name.endswith('.txt'):
+                df = process_txt(file)
+            else:
+                return render(request, 'upload_transcript.html', {
+                    'form': form,
+                    'error': 'Unsupported file format.'
+                })
+
+            # Log DataFrame info
+            if df is not None:
+                print("DataFrame loaded successfully")
+                #print(df.head())
+            else:
+                return render(request, 'upload_transcript.html', {
+                    'form': form,
+                    'error': 'Failed to process the file.'
+                })
+
+            
+            for catalog_name, catalog_model in catalogs.items():
+                # Determine parent model
+                if issubclass(catalog_model, Health_Sciences_Course):
+                    parent_model = Health_Sciences_Course
+                elif issubclass(catalog_model, Arts_and_Sciences_Course):
+                    parent_model = Arts_and_Sciences_Course
+                elif issubclass(catalog_model, Economics_and_Administrative_Sciences_Course):
+                    parent_model = Economics_and_Administrative_Sciences_Course
+                elif issubclass(catalog_model, Law_Course):
+                    parent_model = Law_Course
+                elif issubclass(catalog_model, Engineering_Course):
+                    parent_model = Engineering_Course
+                elif issubclass(catalog_model, Architecture_and_Fine_Arts_Course):
+                    parent_model = Architecture_and_Fine_Arts_Course
+                elif issubclass(catalog_model, Dentistry_Course):
+                    parent_model = Dentistry_Course
+                elif issubclass(catalog_model, Educational_Sciences_Course):
+                    parent_model = Educational_Sciences_Course
+                elif issubclass(catalog_model, Phamarcy_Course):
+                    parent_model = Phamarcy_Course
+                else:
+                    #print(f"Skipping {catalog_name} because it's not a subclass of a known parent model.")
+                    continue
+                # Get all course codes from the catalog model
+                course_codes = set(catalog_model.objects.values_list('course_code', flat=True))
+
+                # Filter DataFrame for courses that exist in the catalog model
+                catalog_df = df[df['Code'].isin(course_codes)]
+
+                if not catalog_df.empty:
+                    #print(f"Processing DataFrame for {catalog_name}")
+                    #print(catalog_df.head())
+                
+                # Ensure the DataFrame has the correct columns
+                    columns = ['Code', 'Title of Course', 'ECTS Credits', 'Grade', 'Credits', 'Gr.Pts']
+                    catalog_df = catalog_df.reindex(columns=columns)
+
+                # Remove any extra columns
+                    catalog_df = catalog_df[columns]
+
+                # Update the grades in the respective catalog model
+                for index, row in catalog_df.iterrows():
+                        code = row['Code']
+                        grade = row['Grade']
+                        title = row['Title of Course']
+                        ects_credit = row['ECTS Credits']
+                        credit = row['Credits']
+
+                        course, created = catalog_model.objects.get_or_create(course_code=code)
+                        course.grade = grade
+                        course.save()
+
+                        transcript, created = Transcript.objects.update_or_create(code=code, defaults={'grades': grade},title=title,ects_credits=ects_credit,credits=credit)
+                        if not created:
+                            transcript.grades = grade
+                            transcript.save()
+
+            
+            # Ensure DataFrame is correct
+            columns = ['Code', 'Title of Course', 'ECTS Credits', 'Grade', 'Credits']
+            
+            for catalog_name, elective_model in model_mapping.items():
+                elective_model: Type[Model]  # Tell the editor that elective_model is a Django model class
+                
+                # Get all course codes from the current model
+                course_codes = set(elective_model.objects.values_list('course_code', flat=True))
+
+                # Filter the DataFrame for the current model's course codes
+                catalog_df = df[df['Code'].isin(course_codes)]
+
+                # If no matching courses in the DataFrame for the current model, skip it
+                if catalog_df.empty:
+                    continue
+
+                # Filter the DataFrame for the current model's course codes
+                catalog_df = df[df['Code'].isin(course_codes)].reindex(columns=columns)
+                
+                # Iterate through the filtered DataFrame and update the corresponding model
+                for index, row in catalog_df.iterrows():
+                    code = row['Code']
+                    grade = row['Grade']
+                    title = row['Title of Course']
+                    ects_credit = row['ECTS Credits']
+                    credit = row['Credits']
+
+                    elective, created = elective_model.objects.get_or_create(
+                    course_code=code)
+                    elective.grade = grade
+                    elective.save()
+           
             # Ensure DataFrame is correct
             columns = ['Code', 'Title of Course', 'ECTS Credits', 'Grade', 'Credits']
             
@@ -1332,10 +1346,10 @@ def upload_transcript(request):
                     ects_credit = row['ECTS Credits']
                     credit = row['Credits']
 
-                technical, created = technical_model.objects.get_or_create(
-                course_code=code)
-                technical.grade = grade
-                technical.save()
+                    technical, created = technical_model.objects.get_or_create(
+                    course_code=code)
+                    technical.grade = grade
+                    technical.save()
            
             return redirect('faculties')
 
