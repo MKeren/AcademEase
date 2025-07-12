@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/custom1.css' %}"> 
+
+</head>
+
+<body>
+
+  <div id="main">
+    <div class="logo2">
+    <div id="container" class="card"><a href="{% url 'faculties' %}">
+      <img src="https://www.final.edu.tr/images/bolum/sliderlar-eczacilik-pharmacyi-03jpg[1651755332].jpg" alt="Image 1"></div>
+    </div>
+
+  
+  <div id="container" class="card" > 
+    <div class="dashboard">
+      
+      <div class="card2" role="listitem">
+        <div><a href="{% url 'pharmacyT_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2021/11/23/18/11/pharmacy-6819335_1280.png"></div>
+          <p><a href="{% url 'pharmacyT_catalog' %}"><h4>Curriculum and Course Catalogue (Turkish)</h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

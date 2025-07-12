@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/custom2.css' %}"> 
+
+</head>
+
+<body>
+
+  <div id="main">
+    <div class="logo2">
+    <div id="container" class="card"><a href="{% url 'faculties' %}">
+      <img src="https://www.final.edu.tr/images/bolum/sliderlar-eczacilik-pharmacyi-03jpg[1651755332].jpg" alt="Image 1"></a></div>
+    </div>
+
+  <div id="container" class="card" >
+    <div class="dashboard">
+
+      <div class="card2" role="listitem">
+          <div><a href="{% url 'pharmacyEM_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2018/09/01/07/07/pharmacist-3646195_1280.jpg"></div>
+          <p><a href="{% url 'pharmacyEM_catalog' %}"><h4>5 Years Pharmacy (MPharm)</h4></a></p>
+      </div>
+      <div class="card2" role="listitem">
+        <div><a href="{% url 'pharmacyEP_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2022/10/06/15/24/pharmacist-7502987_1280.png"></div>
+        <p><a href="{% url 'pharmacyEP_catalog' %}"><h4>6 Years Pharmacy (PharmD)
+
+        </h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

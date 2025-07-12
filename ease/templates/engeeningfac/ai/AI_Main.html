@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/custom1.css' %}">
+</head>
+
+<body>
+    <div id="main">
+      <div class="logo3"><a href="{% url 'faculties' %}">
+      <div id="container" class="card" style="padding:20px">
+      <img src="https://cdn.pixabay.com/photo/2018/09/27/09/22/artificial-intelligence-3706562_1280.jpg" style="width: 100%;" alt="Image 1"></div>
+    </div>
+
+    <div id="container" class="card" >
+    <div class="dashboard">
+
+      <div class="card2" role="listitem">
+          <div><a href="{% url 'ai_catalog' %}"class="logo3"><img src="https://cdn.pixabay.com/photo/2022/09/09/19/11/artificial-intelligence-7443689_1280.png"></a></div>
+          <p><a href="{% url 'ai_catalog' %}"><h4>Course Catalog</h4></a></p>
+      </div>
+    </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

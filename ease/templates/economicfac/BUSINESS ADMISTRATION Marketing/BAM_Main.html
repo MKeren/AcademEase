@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/custom1.css' %}">
+</head>
+
+<body>
+    <div id="main">
+    <div class="logo2"><a href="{% url 'faculties' %}">
+    <div id="container" class="card">
+        <img src="https://www.final.edu.tr/images/bolum/isletmejpg[1563450804].jpg" alt="Image 1"></div>
+    </div>
+    
+    <div id="container" class="card" >
+    <div class="dashboard">
+
+      <div class="card2" role="listitem">
+          <div><a href="{% url 'bam_catalog' %}"class="logo3"><img src="https://cdn.pixabay.com/photo/2020/07/01/19/49/email-marketing-5360758_1280.jpg"></a></div>
+          <p><a href="{% url 'bam_catalog' %}"><h4>Course Catalog</h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

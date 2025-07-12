@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/custom2.css' %}"> 
+</head>
+
+<body>
+  <div id="main">
+    <div class="logo3">
+    <div id="container" class="card" style="padding: 0.5rem;"><a href="{% url 'faculties' %}">
+        <img src="https://cdn.pixabay.com/photo/2021/05/02/01/03/physiotherapy-6222327_1280.jpg" style="width: 100%;" alt="Image 1"></div></a>
+    </div>
+  
+  <div id="container" class="card" >
+    <div class="dashboard">
+      
+      <div class="card2">
+          <div><a href="{% url 'PHYSIOTO_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2022/03/15/09/52/physiotherapy-7069919_1280.png"></a></div>
+          <p><a href="{% url 'PHYSIOTO_catalog' %}"><h4>Old Catalog</h4></a></p>
+      </div>
+      <div class="card2">
+        <div><a href="{% url 'PHYSIOTN_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2016/02/13/18/20/physical-therapy-1198344_1280.jpg"></a></div>
+        <p><a href="{% url 'PHYSIOTN_catalog' %}"><h4>New Catalog</h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

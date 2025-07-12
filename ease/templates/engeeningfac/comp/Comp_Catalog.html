@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/Custom2.css' %}">
+</head>
+<style>
+
+</style>
+
+<body>
+  <div id="main">
+    <div class="logo2"><a href="{% url 'faculties' %}">
+    <div id="container" class="card">
+      <img src="https://www.final.edu.tr/images/bolum/bilgisayar-muhjpg[1562919094].jpg" alt="Image 1"></a></div>
+    </div>
+   
+  <div id="container" class="card" >
+    <div class="dashboard">
+      
+      <div class="card2" role="listitem"  >
+          <div><a href="{% url 'comp_old_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2016/08/28/19/06/networking-1626665_1280.jpg"></a></div>
+          <p><a href="{% url 'comp_old_catalog' %}"><h4>Old Catalog</h4></a></p>
+      </div>
+      <div class="card2"  role="listitem">
+        <div><a href="{% url 'comp_new_catalog' %}" class="logo3"><img src="https://cdn.pixabay.com/photo/2024/05/21/19/57/computer-8779039_1280.jpg"></a></div>
+        <p><a href="{% url 'comp_new_catalog' %}"><h4>New Catalog</h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

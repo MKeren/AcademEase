@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/HOM.css' %}">
+  <style>
+   
+  </style>
+</head>
+
+<body>
+  <div id="main">
+    <div id="container" class="card">
+    <div id="header">
+      <h1>Welcome to AcademEase</h1>
+    </div>
+
+    <div id="slider-container">
+      <div class="slider">
+        <img src="https://media.istockphoto.com/id/687479784/tr/foto%C4%9Fraf/kolay-mavi-%C3%BCzerinde-yaz%C4%B1t-klavye-anahtar-3d.jpg?s=612x612&w=0&k=20&c=1m1ZEliyiASqHxPyaXHeKF7IZu0k-2dRiVlVKT2DKUM=" alt="Image 1">
+        <img src="https://www.final.edu.tr/images/fakulte/akdm2sjpg[1539088188].jpg" alt="Image 2">
+        <img src="https://www.final.edu.tr/images/galeri/final-aday-galeri-29jpg[1567756787].jpg" alt="Image 3">
+        <img src="https://cdn.pixabay.com/photo/2016/07/23/10/44/download-1536639_1280.png" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2022/01/14/07/48/digitization-6936701_1280.jpg" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2017/03/13/21/41/scientist-2141259_1280.jpg" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2024/02/16/06/26/dentist-8576790_1280.png" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2018/01/27/10/09/perception-3110812_1280.jpg" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2014/10/14/20/14/library-488690_1280.jpg" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2020/08/09/14/25/business-5475661_1280.jpg" alt="Image 4">
+        <img src="https://cdn.pixabay.com/photo/2020/08/09/14/25/business-5475660_1280.jpg" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2019/08/06/14/51/hard-hat-4388518_1280.jpg" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2015/09/05/20/02/coding-924920_1280.jpg" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2018/07/13/23/03/planning-3536757_1280.jpg" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2017/03/13/20/24/architecture-2141065_1280.jpg" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2016/11/09/15/27/dna-1811955_1280.jpg" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2021/11/27/06/12/hospital-6827347_1280.png" alt="Image 11">
+        <img src="https://cdn.pixabay.com/photo/2017/07/10/23/49/club-2492011_1280.jpg" alt="Image 11">
+      </div>
+    </div>
+
+    <div id="features">
+      <h2>Features</h2>
+      <ul>
+        <li><i class="fas fa-file-upload"></i><span class="checkmark"></span> Upload your transcript and get instant grade updates on the course catalog</li>
+        <li><i class="fas fa-check-circle"></i><span class="checkmark"></span> Eliminate manual verification and gain time</li>
+        <li><i class="fas fa-book"></i><span class="checkmark"></span> Access a comprehensive course catalogue with color-coded grades (green, orange, and red) for easy tracking</li>
+      </ul> 
+    </div>
+
+    <div id="call-to-action">
+      <a href="{% url 'upload_transcript' %}"><button>Get Started</button></a>
+    </div>
+
+    <script>
+      var imgs = document.querySelectorAll('.slider img');
+      var currentImg = 0;
+
+      function changeSlide() {
+        imgs[currentImg].style.display = 'none';
+        currentImg = (currentImg + 1) % imgs.length;
+        imgs[currentImg].style.display = 'block';
+      }
+
+      setInterval(changeSlide, 3000);
+    </script>
+  </div>
+
+{% endblock %}

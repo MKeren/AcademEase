@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/Custom2.css' %}">
+</head>
+
+<body>
+  <div id="main">
+    <div class="logo2"><a href="{% url 'faculties' %}">
+    <div id="container" class="card">
+      <img src="https://www.final.edu.tr/images/bolum/yazilim-muhendisligijpg[1562919423].jpg" alt="Image 1"></a></div>
+    </div>
+
+  <div id="container" class="card" >
+    <div class="dashboard">
+    
+      <div class="card2">
+          <div><a href="{% url 'soft_old_catalog' %}"  class="logo3"><img src="https://cdn.pixabay.com/photo/2019/06/17/19/48/source-4280758_1280.jpg"></a></div>
+          <p><a href="{% url 'soft_old_catalog' %}"><h4>Old Catalog</h4></a></p>
+      </div>
+      
+      <div class="card2">
+        <div><a href="{% url 'soft_new_catalog' %}"  class="logo3"><img src="https://cdn.pixabay.com/photo/2015/09/05/23/28/coding-926242_1280.jpg"></a></div>
+        <p><a href="{% url 'soft_new_catalog' %}"><h4>New Catalog</h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

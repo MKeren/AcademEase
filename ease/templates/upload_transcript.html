@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/transcript-upload.css' %}">
+</head>
+
+<body>
+  <div id="main">
+    <div id="container" class="card">
+      <div id="header">
+        <h1>Upload Transcript</h1>
+      </div>
+
+      <div id="call-to-action">
+        <a href="{% url 'home' %}"><button>Return to Home</button></a>
+      </div>
+
+      <div id="upload-container">
+        <div class="card">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block mt-4">Upload</button>
+          </form>
+        </div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</body>
+
+{% endblock %}

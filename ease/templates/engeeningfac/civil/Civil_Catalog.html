@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+  <!-- DataTables --> 
+  <link rel="stylesheet" href="{%static 'datatables/dataTables.css' %}">
+  <link rel="stylesheet" href="{%static 'css/Custom2.css' %}">
+
+</head>
+
+<body>
+
+  <div id="main">
+    <div class="logo2"><a href="{% url 'faculties' %}">
+    <div id="container" class="card">
+    <img src="https://www.final.edu.tr/images/bolum/insat-muhjpg[1562919455].jpg" alt="Image 1"></a></div>
+  </div>
+ 
+  <div id="container" class="card" >  
+    <div class="dashboard">
+
+      <div class="card2" role="listitem">
+          <div><a href="{% url 'civil_old_catalog' %}"class="logo3"><img src="https://cdn.pixabay.com/photo/2018/10/15/23/42/industrial-3750300_1280.png"></a></div>
+          <p><a href="{% url 'civil_old_catalog' %}"><h4>Old Catalog</h4></a></p>
+      </div>
+      <div class="card2" role="listitem">
+        <div><a href="{% url 'civil_new_catalog' %}"class="logo3"><img src="https://cdn.pixabay.com/photo/2024/06/11/17/53/ai-generated-8823752_1280.jpg"></a></div>
+        <p><a href="{% url 'civil_new_catalog' %}"><h4>New Catalog</h4></a></p>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
